@@ -217,14 +217,7 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.remindPeriod = 1.0;
         self.verboseLogging = NO;
         self.previewMode = NO;
-
-#if DEBUG
-
-        //enable verbose logging in debug mode
-        self.verboseLogging = YES;
-        NSLog(@"iRate verbose logging enabled.");
-
-#endif
+        self.verboseLogging = NO;
 
         //app launched
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -643,13 +636,16 @@ static NSString *const iRateMacAppStoreURLFormat = @"macappstore://itunes.apple.
         self.checkingForAppStoreID = NO;
 
         //log the error
-        if (error)
+        if (self.verboseLogging)
         {
-            NSLog(@"iRate rating process failed because: %@", [error localizedDescription]);
-        }
-        else
-        {
-            NSLog(@"iRate rating process failed because an unknown error occured");
+            if (error)
+            {
+                NSLog(@"iRate rating process failed because: %@", [error localizedDescription]);
+            }
+            else
+            {
+                NSLog(@"iRate rating process failed because an unknown error occured");
+            }
         }
 
         //could not connect
